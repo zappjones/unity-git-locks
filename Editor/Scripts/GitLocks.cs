@@ -548,7 +548,7 @@ public class GitLocks : ScriptableObject
         // Send each request
         foreach (string pathsString in pathsStrings)
         {
-            ExecuteProcessTerminalWithConsole("git", "lfs lock " + pathsString);
+            ExecuteProcessTerminalWithConsole(GetGitLFSPath(), "lock " + pathsString);
         }
     }
 
