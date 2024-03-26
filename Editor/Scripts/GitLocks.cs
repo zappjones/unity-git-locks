@@ -116,13 +116,18 @@ public class GitLocks : ScriptableObject
         }
     }
 
+    public static string GetGitLFSPath()
+    {
+        return EditorPrefs.GetString("gitLFSPath", "git-lfs");
+    }
+
     public static void RefreshLocks()
     {
         lastRefresh = DateTime.Now;
 
         // Get the locks asynchronously
         currentlyRefreshing = true;
-        ExecuteNonBlockingProcessTerminal("git", "lfs locks --json");
+        ExecuteNonBlockingProcessTerminal(GetGitLFSPath(), "locks --json");
     }
 
     public static void RefreshCallback(string result)
@@ -130,7 +135,7 @@ public class GitLocks : ScriptableObject
         // If empty result, start a simple git lfs locks (no json) to catch potential errors
         if (result == "[]")
         {
-            ExecuteNonBlockingProcessTerminal("git", "lfs locks");
+            ExecuteNonBlockingProcessTerminal(GetGitLFSPath(), "locks");
         }
 
         // Check that we're receiving what seems to be a JSON result
